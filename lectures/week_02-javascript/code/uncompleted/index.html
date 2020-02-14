@@ -8,8 +8,23 @@
 	<h1>Hello World</h1> 	
 
 	<script>
-		
+		var asdf = ["asdf", "asdf"]
+		var usernames =  ["Cammie", "“Chidi”", "“Benny”", "“Chirag”"]; 
+		var passwords = ["“$56#hdj”", "“$56#asd”", "“$56#mqw”", "“$56#sla”"]; 
 
+		function asdf(u, p){
+			let objects = {};
+			for(var i in u){
+				let username=u[i];
+				let pass=p[i];
+				objects[i]={
+					username:pass,
+				};
+			}
+		}
+
+		asdf(usernames, passwords)
+    
 		// Arrays
 
 		// For Loops
