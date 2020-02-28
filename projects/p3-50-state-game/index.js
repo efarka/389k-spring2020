@@ -60,6 +60,126 @@ var abvMap = {
     "Wyoming": "56",
 }
 
+var total =0;
+var gotten = [];
+document.getElementById("state").disabled = true;
+
+
+
+  for (var i=0; i<states.length; i++){
+      states[i]=states[i].toUpperCase();
+  }
+
+function start(){
+    document.getElementById("state").disabled = false;
+
+    countDown();
+    document.getElementById("start").disabled = true;
+
+}
+
+function capitalize(str)
+{
+ return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+
+function lose(){
+    clearInterval(interval);
+            document.getElementById("time").innerHTML = "0";
+
+            document.getElementById("state").disabled = true;
+            var percent = total/states.length *100;
+            document.getElementById("win").innerHTML= "percentage: " + percent.toString();
+            document.getElementById("lose").innerHTML= "you missed:";
+
+            for (var i=0; i<states.length; i++){
+                if(gotten.includes(states[i])==false){
+                    var node = document.createElement("LI");
+                    node.setAttribute("onmouseover", "spanish(this)")
+                    var textnode = document.createTextNode(states[i]);
+                    node.appendChild(textnode);
+                    document.getElementById("missed").appendChild(node);
+                }
+            }
+}
+var global;
+var global2;
+function spanish(a){
+    global=a;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        result= this.responseText;
+        g3=result.replace(/['"]+/g, '');
+        g3=g3.replace(/[\[\]']+/g,'');
+        a=g3.split(",");
+        document.getElementById("spanish").innerHTML = "Spanish speakers in " + state + ":" + a[5];
+        global2=this.responseText;
+        }
+    };
+    var state= a.innerHTML;
+    state = state.toLowerCase();
+    var num = abvMap[capitalize(state)];
+
+    xhttp.open("GET", "https://api.census.gov/data/2013/language?get=EST,LANLABEL,NAME&for=state:"+ num + "&LAN=625", true);
+    xhttp.send();
+    
+}
+// $(document).ready(function(){
+// $("ul li").hover(function(){
+//     $(this).css("background-color", "yellow");
+//     }, function(){
+//     $(this).css("background-color", "pink");
+//   });
+// });
+
+// $(document).ready(function(){
+//     $("p").hover(function(){
+//       $(this).css("background-color", "yellow");
+//       }, function(){
+//       $(this).css("background-color", "pink");
+//     });
+//   }); 
+
+function countDown(){
+    var timeLeft = 20;
+    interval = setInterval(function(){
+        document.getElementById("time").innerHTML = timeLeft;
+        
+
+        if(timeLeft ==0){
+            lose();
+        }
+        timeLeft--;
+    }, 1000);    
+
+};
+
+
+function myFunction() {
+    var x = document.getElementById("state").value;
+    if(states.includes(x.toUpperCase())){
+        document.getElementById("state").value="";
+        var node = document.createElement("LI");
+        node.setAttribute("onmouseover", "spanish(this)")
+
+        var textnode = document.createTextNode(x.toUpperCase());
+        node.appendChild(textnode);
+        document.getElementById("myList").appendChild(node);
+
+        gotten.push(x.toUpperCase());
+
+        total++;
+        if(total==states.length){
+            clearInterval(interval);
+            document.getElementById("win").innerHTML= "you win!";
+
+        }
+    }
+    
+  }
+
+  
 
 /*
  * The majority of this project is done in JavaScript.
