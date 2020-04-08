@@ -42,9 +42,7 @@ app.get("/pokemon/:pokemon_id", function(req, res) {
 
     contents = "";
     for (var key in result){
-        console.log(key);
-
-        console.log(result[key].toString());
+      
         contents += `<tr><td>` + key.toString() + `</td><td>` + JSON.stringify(result[key]) + `</td></tr>\n`
     }
     var html = `<html>\n<body>\n<table>` + contents + `</table>\n</body>\n</html>`;
